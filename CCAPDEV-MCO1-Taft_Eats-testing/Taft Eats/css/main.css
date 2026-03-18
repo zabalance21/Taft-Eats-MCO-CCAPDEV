@@ -1,0 +1,1240 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: hsl(34, 80%, 96%);
+    min-height: 100%;
+}
+
+
+h1 {
+    font-size: 150px;
+}
+
+/* CHANGED: Added font-family to match the rest of the site (Arial).
+   Previously h2 had no font-family set, so it used the browser default serif font. */
+h2 {
+    font-size: 100px;
+    text-align: center;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+h3 {
+    font-size: xx-large;
+    padding: 10px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: bold;
+}
+
+h4 {
+    font-size: 25px;
+    font-weight: bold;
+    margin: 30px 0;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: normal; 
+}
+
+h5 {
+    font-size: 30px;
+    font-family: Arial, Helvetica, sans-serif;
+    letter-spacing: -0.05em;
+}
+
+p {
+    margin: 0;
+    font-size: 20px;
+    letter-spacing: -0.05em;
+    font-weight:bold;
+    font-family: Arial, Helvetica, sans-serif;
+    text-align: justify;
+}
+
+.Top_navigation {
+    display: flex;
+    align-items: center;
+    gap: 25px;
+    border-bottom: 2px solid black;
+    margin-bottom: 10px;
+    flex-wrap: wrap;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    background-color: hsl(34, 80%, 96%);
+}
+
+.nav_buttons {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-left: 45px;
+}
+
+.search_bar {
+    width: 1100px;
+    font-size: 20px;
+}
+
+button {
+    background-color: black;
+    color: white;
+    font-weight: bold;
+    font-size: 20px;
+    border: none;
+    padding: 10px 24px;
+    border-radius: 20px;
+}
+
+button:hover {
+    border-radius: 20px;
+}
+
+button:active {
+    transform: scale(0.98);
+}
+
+.Main {
+    background-color: #f7ca64;
+    display: flex;
+    padding: 50px 0;
+    gap: 100px;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: 100px;
+}
+
+.left_part {
+    text-align: left;
+}
+
+img {
+    border-radius: 20px;
+    width: 950px;
+    max-width: 100%;
+    height: auto;
+}
+
+.center {
+    text-align: center;
+    line-height: 1;
+}
+
+.rest_rev {
+    align-items: center;
+}
+
+.revs {
+    display: flex;
+    margin-top: 30px;
+    margin-left: 40px;
+    gap: 20px;
+}
+
+.header {
+    display: flex;
+    margin-left: 70px;
+    gap: 1200px;
+}
+
+.review {
+    width:400px;
+    min-height: 500px;
+    box-sizing: border-box;
+    background-color:#ccc;
+    /* Keep a visible gray frame around the restaurant image/logo area. */
+    padding: 10px 10px 14px;
+    /* Curve the gray card corners and clip children to match the shape. */
+    border-radius: 16px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    cursor: pointer;
+    transition: 0.2s all ease;
+}
+
+.review:hover {
+    background-color: #e0e0e0;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0, 0, 0.2);
+}
+
+.review:active {
+    background-color: #d0d0d0;
+    transform: translateY(0);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+.rev_pic {
+    width: 95%;
+    height: 250px;
+    /* Center the image horizontally within the gray card. */
+    display: block;
+    margin: 0 auto;
+    border-radius: 0;
+    object-fit: cover;
+    
+}
+
+.stars span{
+    font-size:32px;
+    color: gold;
+}
+
+.stars span.active {
+    color: gold;
+}
+
+.rest_nam {
+    font-size: 24px;
+    /* CHANGED: Added top margin so the restaurant name sits a bit farther from the picture. */
+    margin-top: 8px;
+    /* CHANGED: Use a fixed text block height so titles align across cards. */
+    min-height: 52px;
+    line-height: 1.1;
+    padding: 0 8px;
+    text-align: left;
+}
+
+.rest_desc {
+    /* CHANGED: Keeps description area even so stars/review count line up across cards. */
+    /* CHANGED: Reduced fixed description space so stars/reviews are closer to description. */
+    min-height: 80px;
+    max-height: 80px;
+    overflow: hidden;
+    line-height: 1.2;
+    padding: 0 8px;
+    text-align: left;
+    display: -webkit-box;
+    line-clamp: 3;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+}
+
+.review .stars {
+    /* CHANGED: Keep stars slightly below description instead of pushing to card bottom. */
+    margin-top: 6px;
+    padding: 0 5px;
+}
+
+.review .rev_count {
+    /* CHANGED: Keep review count close to stars. */
+    margin-top: 2px;
+    padding: 0 8px;
+}
+
+.people_rev {
+    margin-top: 40px;
+}
+
+.user_revs {
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 30px;
+    margin-left: 40px;
+    gap: 28px;
+    align-content: flex-start;
+    align-items: flex-start;
+    justify-content: center;
+}
+
+.user_pic {
+    border-radius: 100%;
+    width: 100px;
+    height: 100px;
+    margin: 0;
+}
+
+.peep_review {
+    width:350px;
+    min-height: 580px;
+    box-sizing: border-box;
+    background-color:#ccc;
+    /* CHANGED: Use fixed vertical structure so cards stay visually even. */
+    display: flex;
+    flex-direction: column;
+    padding: 14px;
+    cursor: pointer;
+    transition: 0.2s all ease;
+    border-radius: 16px;
+    overflow: hidden;
+    margin-bottom: 75px;
+}
+
+.peep_review:hover {
+    background-color: #e0e0e0;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0, 0, 0.2);
+}
+
+.peep_review:active {
+    background-color: #d0d0d0;
+    transform: translateY(0);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+.user_header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px; 
+}
+
+.user_header .name {
+    margin: 0;
+    text-align: left;
+    letter-spacing: 0;
+}
+
+/* CHANGED: Scoped footer style for homepage review cards only. */
+.peep_footer {
+    background-color: #FFB347;
+    border-radius: 25px;
+    padding: 10px;
+    margin-top: 12px;
+}
+
+.peep_footer p {
+    text-align: left;
+    letter-spacing: 0;
+    line-height: 1.1;
+}
+
+/* CHANGED: Keep review text area consistent across cards. */
+.peep_body {
+    text-align: left;
+    letter-spacing: 0;
+    line-height: 1.2;
+    min-height: 84px;
+    max-height: 84px;
+    overflow: hidden;
+    display: -webkit-box;
+    line-clamp: 3;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+}
+
+/* CHANGED: Real image and placeholder reserve identical space for proportional cards. */
+.review-media,
+.review-media-placeholder {
+    width: 100%;
+    height: 250px;
+    margin-top: 8px;
+}
+
+.review-media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+.review-media-placeholder {
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.peep_stars span{
+    font-size:32px;
+    color: gray;
+}
+
+.peep_stars span.active {
+    color: gold;
+}
+
+
+.bottom_img {
+    width: 100%;
+    height: 200px;
+    border-radius: 0;
+    object-fit: cover;
+}
+
+/*about us*/
+
+.main_aboutus {
+    margin-bottom:400px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-content: center;
+    width:900px;
+    margin-left: 450px;
+}
+
+/*Register*/
+.register {
+    background-image: url("../assets/images/bg_image.jpg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    min-height: 100vh;
+}
+
+.auth-section {
+    margin-top: 100px;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.auth-form {
+    width: 1400px;
+    height: 700px;
+    display: flex;
+    background-color: hsl(34, 80%, 96%);
+}
+
+.reg_img {
+    width: 700px;
+    height: 700px;
+    object-fit: cover;
+    border-radius: 0;
+}
+
+.reg_side {
+    width:50%;
+    display: flex;
+    flex-direction: column;
+}
+
+.reg_header {
+    font-weight: bold;
+    text-align: center;
+    font-size: 48px;
+    margin-top: 30px;
+}
+
+.reg_input {
+    border: none;
+    background-color: transparent;
+    outline: none;
+    font-size: 32px;
+    width: 600px;
+    border-bottom: 5px solid black;
+    margin: 25px 50px;
+}
+
+.custom-file-input {
+    display: none;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group label {
+    font-weight: bold;
+    margin-bottom: 8px;
+    font-size: 20px;
+}
+
+.img_input {
+    display: none;
+    border: none;
+}
+
+.profile-btn {
+    display: inline-block;
+    padding: 10px 20px;
+    width: 170px;
+    margin: 10px 50px;
+    background-color: #333;
+    color: #fff;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: 0.2s;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.profile-btn:hover {
+    background-color: #555;
+}
+
+.btns {
+    margin: 175px 50px;
+    text-align: center;
+}
+
+/*------LOGIN--------*/
+.login {
+    text-align: center;
+}
+
+.auth-section {
+    display: flex;
+    flex-direction: column;
+}
+
+.auth-form2 {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start; 
+}
+
+.auth-footer {
+    margin-top: 20px;
+    margin-left: 80px;
+    text-align: center;
+    justify-content: center;
+}
+
+/* CHANGED: Styled the login page "Sign up" link to blue for clearer CTA emphasis. */
+.auth-footer a {
+    color: #007bff;
+    text-decoration: none;
+}
+
+.auth-footer a:hover {
+    color: #0056b3;
+    text-decoration: underline;
+}
+
+.sign_in {
+    font-size: 50px;
+    letter-spacing: 0.04em;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.auth {
+    font-size: 32px;
+    border: 5px solid black;
+    border-radius: 20px;
+    padding:10px;
+    margin-bottom: 10px;
+}
+
+#login-btn {
+    margin-top: 30px;
+    font-size: 32px;
+    border-radius: 70px;
+    padding: 15px 40px;
+}
+
+footer {
+    margin-top: 250px;
+}
+
+/*Navigations*/
+nav {
+    display: flex;
+    align-items: center;
+    gap: 25px;
+    border-bottom: 2px solid black;
+    margin-bottom: 10px;
+    flex-wrap: wrap;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    background-color: hsl(34, 80%, 96%);
+}
+
+#search-establishment {
+    width: 850px;
+    font-size: 20px;
+}
+
+#search-establishment2 {
+    width: 1100px;
+    font-size: 20px;
+}
+
+#filter-rating {
+    width:250px;
+    font-size: 20px;
+}
+
+.nav-right {
+    display: flex;
+    gap: 10px;
+    margin-left: 20px;
+}
+
+.nav-user-menu {
+    position:relative;
+    display: inline-block;
+}
+
+.nav-user-initial {
+    cursor: pointer;
+}
+
+.user-dropdown-menu {
+    position: absolute;
+    top:100%;
+    left:0;
+    background-color: white;
+    min-width: 150px;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+    display: flex;
+    flex-direction: column;
+    z-index: 1000;
+}
+
+a.nav_link {
+    text-decoration: none;
+    color: white;
+    padding: 10px 10px; 
+    background-color: rgb(167, 167, 167);
+    font-size: 20px;
+    font-weight: bold;
+    font-family: Arial, Helvetica, sans-serif;
+
+}
+
+a.nav_link:hover {
+    text-decoration: underline;
+    background-color: #555;
+}
+
+.establishments-section {
+    display:flex;
+    flex-wrap: wrap;
+    gap: 80px;
+    margin-top: 30px;
+    margin-left: 80px;
+    margin-right: 80px;
+    justify-content: center;
+}
+
+.establishment-card {
+    width:350px;
+    height:500px;
+    border-radius: 20px;
+    box-sizing: border-box;
+    background-color:#ccc;
+    /* CHANGED: Clip content to rounded card corners and keep text area consistent. */
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    cursor: pointer;
+    transition: 0.2s all ease;
+}
+
+/* CHANGED: Scoped text styles so establishment-card copy does not inherit global justified spacing. */
+.establishment-card .est-name {
+    margin: 0;
+    padding: 12px 14px 4px;
+    min-height: 64px;
+    line-height: 1.15;
+    text-align: left;
+}
+
+.establishment-card .est-rating {
+    margin: 0;
+    padding: 0 14px;
+    text-align: left;
+    letter-spacing: 0;
+    line-height: 1.2;
+}
+
+/* CHANGED: Show star rating directly under overall rating on establishments cards. */
+.establishment-card .est-stars {
+    margin: 4px 0 2px;
+    padding: 0 14px;
+    line-height: 1;
+}
+
+.establishment-card .est-stars span {
+    font-size: 26px;
+    color: lightgray;
+}
+
+.establishment-card .est-stars span.active {
+    color: gold;
+}
+
+.establishment-card .est-desc {
+    margin: 0;
+    padding: 0 14px 12px;
+    min-height: 116px;
+    text-align: left;
+    letter-spacing: 0;
+    line-height: 1.2;
+    overflow: hidden;
+    display: -webkit-box;
+    line-clamp: 3;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+}
+
+.establishment-card:hover {
+    background-color: #e0e0e0;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0, 0, 0.2);
+}
+
+.establishment-card:active {
+    background-color: #d0d0d0;
+    transform: translateY(0);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+.rest_img {
+    width:350px;
+    height: 300px;
+    object-fit: cover;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+/*Establishment review*/
+.est_rev {
+    display: grid;
+    grid-template-areas:"top top" "left right";
+    align-items: stretch;
+}
+
+.establishment-header {
+    grid-area: top;
+}
+
+.rating-summary p {
+    text-align: center; 
+    margin: 0;
+}
+
+.overall-rating {
+    grid-area: left;
+    border-right: 5px dashed black;
+    justify-content: center;
+    text-align: center;
+    background-color:#ccc;
+}
+
+.reviews-section {
+    grid-area: right;
+    display: grid;
+    grid-template-areas:"top" "bottom";
+    grid-template-rows: auto 1fr; 
+    background-color:#ccc;
+}
+
+.stars {
+    font-size: 30px;
+    display: inline-block;
+    line-height: 1;
+}
+
+.stars span, .stars {
+    color: lightgray;
+}
+
+.stars {
+    color: gold;
+}
+
+.header_revs {
+    font-size: 50px;
+}
+
+.revs_header {
+    display:flex;
+    align-items: center;
+    width: auto;
+    height: 70px;
+    gap: 30px;
+    padding: 10px 0;
+    margin-bottom: 20px;
+    border-bottom: 2px black solid;
+    margin-left: 50px;
+}
+
+/* CHANGED: Styled the "Write a Review" link as a button to match
+   the site's button style (black bg, white text, rounded). */
+#create-review-btn {
+    background-color: black;
+    color: white;
+    font-weight: bold;
+    font-size: 13px;
+    padding: 10px 15px;
+    border-radius: 15px;
+    text-decoration: none;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+#create-review-btn:hover {
+    background-color: #333;
+}
+
+#create-review-btn:active {
+    transform: scale(0.98);
+}
+
+#search-reviews {
+    width: 300px;
+    font-size: 26px;
+}
+
+.review-card {
+    margin-left: 50px;
+    border-bottom: 2px dashed black;
+}
+
+.avatar {
+   border-radius: 100%;
+   width: 100px;
+   height: 100px;
+   margin: 0;
+}
+
+
+/* CHANGED: Added font-family so the user's name displays in Arial
+   instead of the browser default serif font. */
+.review-user, .review-header{
+    display: flex;
+    gap: 20px;
+    padding-top: 10px;
+    font-size: 20px;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.main_review_h {
+    font-weight: bold;
+    font-size: 40px;
+    margin: 0;
+    padding: 0;
+}
+
+/* CHANGED: Removed -webkit-line-clamp based truncation.
+   Truncation is now handled by JS (100 character limit with "...").
+   The .truncated class is kept as a marker for JS to target. */
+.main_review_p {
+    overflow: hidden;
+}
+
+.main_review_p.expanded {
+    overflow: visible;
+}
+
+.read-full-review-btn {
+    color: #007bff;
+    cursor: pointer;
+    text-decoration: underline;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.read-full-review-btn:hover {
+    color: #0056b3;
+}
+
+.owner-response {
+    margin: 20px 0;
+    background-color: gray;
+    width: 900px;
+    border-radius: 10px;
+    font-family: Arial, Helvetica, sans-serif;
+
+}
+
+.review-footer {
+    margin-bottom: 10px;
+}
+
+.vote-btn {
+    padding: 5px 12px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    margin-right: 5px;
+    transition: background-color 0.2s;
+    opacity: 1;
+}
+
+.vote-btn:hover {
+    filter: brightness(0.95);
+    padding: 5px 12px;
+}
+
+/* CHANGED: Guests see unclickable vote buttons with no hover animation and not-allowed cursor. */
+.vote-btn:disabled {
+    cursor: default;
+    transition: none;
+}
+
+.vote-btn:disabled:hover {
+    filter: none;
+}
+
+/* CHANGED: Keep disabled vote buttons visually static (no hover/active animation). */
+.vote-btn:disabled:hover,
+.vote-btn:disabled:active,
+.vote-btn[aria-disabled="true"]:hover,
+.vote-btn[aria-disabled="true"]:active {
+    filter: none;
+    transform: none;
+}
+
+.vote-btn.helpful-btn {
+    background-color: #4caf50;
+    color: white;
+    border-color: #4caf50;
+}
+
+.vote-btn.unhelpful-btn {
+    background-color: #f44336;
+    color: white;
+    border-color: #f44336;
+}
+
+/* CHANGED: New styles for the restaurant-level like/dislike buttons on the establishment page.
+   Inactive state is outlined; active state fills with green (like) or red (dislike). */
+.restaurant-vote {
+    display: flex;
+    gap: 12px;
+    margin: 16px 0 8px;
+}
+
+.rest-like-btn,
+.rest-dislike-btn {
+    padding: 8px 20px;
+    border-radius: 20px;
+    border: 2px solid #999;
+    background: transparent;
+    cursor: pointer;
+    font-size: 0.95rem;
+    transition: background-color 0.2s, border-color 0.2s, color 0.2s;
+}
+
+.rest-like-btn.active {
+    background-color: #4caf50;
+    border-color: #4caf50;
+    color: white;
+}
+
+.rest-dislike-btn.active {
+    background-color: #f44336;
+    border-color: #f44336;
+    color: white;
+}
+
+.rest-like-btn:hover:not(.active) {
+    border-color: #4caf50;
+    color: #4caf50;
+}
+
+.rest-dislike-btn:hover:not(.active) {
+    border-color: #f44336;
+    color: #f44336;
+}
+
+/*Create Review*/
+
+.main_create {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.create-review-card {
+    width: 1000px;
+    background-color: ghostwhite;
+    border: 2px solid gray;
+    border-radius: 10px;
+    padding: 20px;
+}
+
+#btn_for_create {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    width: 400px;
+    margin-top: 20px;
+}
+
+/*Review*/
+
+.centering {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.full_rev {
+    width: 1000px;
+    background-color: #ccc;
+    border: 2px solid gray;
+    border-radius: 10px;
+    padding: 20px
+}
+
+.review-body, .review-footer {
+    margin: 20px 0;
+}
+
+/*edit profile*/
+
+.edit_prof {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.edit-profile-section {
+    width: 1000px;
+    background-color: ghostwhite;
+    border: 2px solid gray;
+    border-radius: 10px;
+    padding: 20px;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.edit-profile-card {
+    display: flex;
+    gap: 20px;
+}
+
+.edit-profile-image {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 10px;
+}
+
+#edit-avatar {
+    width: 300px;
+    height: 300px;
+    border: 2px solid grey;
+}
+
+textarea {
+    width: 600px;
+}
+
+.edit-profile-actions {
+    display: flex;
+    margin-top: 150px;
+    margin-left: 300px;
+    gap: 10px;
+}
+
+/*profile*/
+.profile {
+    display: flex;
+    flex-wrap: wrap;
+    grid-template-areas:"top-left top-right" "bottom bottom";
+    margin-top: 50px;
+    margin-left: 400px;
+    margin-right: 100px;
+    
+}
+
+.profile-section {
+    display: flex;
+    align-items: flex-start;
+    gap: 40px;
+}
+
+.profile-card {
+    width: 800px;
+    display: flex;
+    background-color: #ccc;
+    border: 2px solid gray;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.profile-info {
+    padding: 6px 16px 16px;
+}
+
+#profile-username {
+    font-size: 32px;
+    margin:10px 0 0 20px;
+    padding:0 0 0 0;
+}
+
+.joined-date {
+    margin: 0 0 0 20px;
+    padding:0 0 0 0;
+}
+
+.profile-description {
+    margin: 15px 0 0 20px;
+    padding:0 0 0 0;
+}
+
+.edit-profile-btn {
+    margin: 110px 0 0 15px;
+}
+
+#profile-avatar {
+    width: 200px;
+    height: 300px;
+    object-fit: cover;
+    display: block;
+}
+
+.profile-stats {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.stat-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: #ccc;
+    border: 2px solid gray;
+    border-radius: 20px;
+    width: 200px;
+    min-height: 100px;
+    padding: 12px 14px;
+    box-sizing: border-box;
+    margin: 0;
+    gap: 6px;
+}
+
+/* CHANGED: Scoped text reset so global h3/p padding doesn't collide with stat-card borders. */
+.stat-card p,
+.stat-card h3 {
+    margin: 0;
+    padding: 0;
+    text-align: center;
+    letter-spacing: 0;
+    line-height: 1.1;
+}
+
+.stat-card .stars {
+    margin-top: 2px;
+    line-height: 1;
+}
+
+.smaller {
+    font-size: 22px;
+}
+
+.latest-reviews {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 1100px;
+    margin: 40px 0;
+    padding: 40px;
+    background-color: #ccc;
+    border: 2px solid gray;
+    border-radius: 20px;
+    gap: 30px;
+}
+
+.latest-reviews h3 {
+    text-align: center;
+    font-size: 32px;
+    font-weight: bold;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.review-card2 {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    font-size: 32px;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+/* CHANGED: Added grid layout for the header row and each review row
+   so Date, Restaurant Name, Rating, and View align in evenly spaced columns. */
+.reviews-header2 {
+    display: grid;
+    grid-template-columns: 1fr 1.5fr 1fr 0.5fr;
+    gap: 10px;
+    font-weight: bold;
+    padding-bottom: 10px;
+    border-bottom: 2px solid gray;
+}
+
+.review-row {
+    display: grid;
+    grid-template-columns: 1fr 1.5fr 1fr 0.5fr;
+    gap: 10px;
+    align-items: center;
+}
+
+/* CHANGED: Set the star color to gold in the Latest Reviews section on the profile page.
+   The stars here use .review-rating instead of .stars, so they need their own color rule. */
+.review-rating {
+    color: gold;
+}
+
+/* CHANGED: Styled the "View" link in Latest Reviews to be smaller,
+   blue, and use Times New Roman font. */
+.review-card2 a {
+    font-size: 18px;
+    color: #007bff;
+    font-family: "Times New Roman", Times, serif;
+}
+
+/* CHANGED: Added styles for the owner reply form container and its elements.
+   The form appears when the owner clicks Write Reply or Edit Reply. */
+.reply-form-container {
+    margin: 15px 0 15px 50px;
+    padding: 15px;
+    background-color: #e8e8e8;
+    border-radius: 10px;
+    border: 1px solid #999;
+}
+
+.reply-form label {
+    font-size: 18px;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.reply-form textarea {
+    width: 100%;
+    font-size: 16px;
+    font-family: Arial, Helvetica, sans-serif;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #999;
+    margin-top: 8px;
+    resize: vertical;
+}
+
+.reply-form-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.reply-submit-btn {
+    background-color: black;
+    color: white;
+    font-weight: bold;
+    font-size: 14px;
+    padding: 8px 20px;
+    border-radius: 15px;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.reply-cancel-btn {
+    background-color: #999;
+    color: white;
+    font-weight: bold;
+    font-size: 14px;
+    padding: 8px 20px;
+    border-radius: 15px;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.respond-btn {
+    background-color: #333;
+    color: white;
+    font-size: 14px;
+    padding: 5px 12px;
+    border-radius: 5px;
+    font-family: Arial, Helvetica, sans-serif;
+}
+

@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+
+    <head>
+        <title>Taft Eats | {{#if reviewToEdit}}Edit Review {{else}} Create a review {{/if}}</title>
+
+        <!-- CHANGED: Switched from relative paths (../css, ../js) to absolute paths (/css, /js).
+             When the URL is /review/edit/:id, the browser resolved ../css/main.css to
+             /review/css/main.css which doesn't exist, causing the page to render unstyled. 
+             Absolute paths always resolve from the root regardless of the URL depth. -->
+        <link rel = "stylesheet" type = "text/css" href = "/css/main.css">
+
+        <script src = "/js/jquery-4.0.0.min.js"></script>
+        <script src = "/js/data.js"></script>
+        <script src = "/js/main.js"></script>
+    </head>
+
+    <body>
+        <!-- Dynamic Navigation Bar - Will be populated by JavaScript -->
+        <div class="Top_navigation">
+            <a href="/"><h3>TAFT EATS</h3></a>  
+            <!-- CHANGED: Wrapped search bar in a form that navigates to /establishments with search query -->
+            <form method="get" action="/establishments" style="display:inline;">
+                <input type="text" name="search" class="search_bar" placeholder="Search establishments...">
+            </form>
+            <div class="nav_buttons" id="nav-right">
+                <!-- Navigation will be dynamically inserted here by main.js -->
+            </div>
+        </div>
+
+
+        <!-- Create Review Section -->
+        <main class="main_create">
+            <section class = "create-review-section">
+                <h2> Create a Review </h2>
+
+                <div class = "create-review-card">
+                    <form action="/review/submit" method="post" enctype="multipart/form-data"> 
+
+                        <input type="hidden" name="reviewId" value="{{reviewToEdit._id}}">
+                        <div class = "form-group">
+                            <label for = "review-establishment"> Establishment </label>
+                            {{#if selectedRestaurantId}}
+                                <p><strong>{{selectedRestaurantName}}</strong></p>
+                                <input type="hidden" name="restaurantId" value="{{selectedRestaurantId}}">
+                            {{else}}
+                                <select id="review-establishment" name="restaurantId">
+                                    <option value="">-- Select a restaurant --</option>
+                                    {{#each establishments}}
+                                        <option value="{{this.id}}">{{this.name}}</option>
+                                    {{/each}}
+                                </select>
+                            {{/if}}
+                        </div>
+
+                        <!-- Review Title -->
+                        <div class = "form-group">
+                            <label for = "review-title"> Review Title </label>
+                            <input type = "text" id = "review-title" name="title" placeholder = "Enter review title" value="{{reviewToEdit.title}}">
+                        </div>
+
+                        <!-- Review Body -->
+                        <div class = "form-group">
+                            <label for = "review-body"> Review Body </label>
+                            <textarea id = "review-body" rows = "6" name="body" placeholder = "Write your review here" >{{reviewToEdit.body}}</textarea>
+                        </div>
+
+                        <!-- Rating -->
+                        <div class = "form-group">
+                            <label for = "review-rating"> Rating </label>
+                            <select id = "review-rating" name="rating">
+                                <option value = ""> -- Select rating -- </option>
+                                <option value = "1" {{#if (eq reviewToEdit.rating 1)}} selected {{/if}}> ★☆☆☆☆ </option>
+                                <option value = "2" {{#if (eq reviewToEdit.rating 2)}} selected {{/if}}> ★★☆☆☆ </option>
+                                <option value = "3" {{#if (eq reviewToEdit.rating 3)}} selected {{/if}}> ★★★☆☆ </option>
+                                <option value = "4" {{#if (eq reviewToEdit.rating 4)}} selected {{/if}}> ★★★★☆ </option>
+                                <option value = "5" {{#if (eq reviewToEdit.rating 5)}} selected {{/if}}> ★★★★★ </option>
+                            </select>
+                        </div>
+
+                        <!-- Optional Media -->
+                        <div class = "form-group">
+                            <label for = "review-media"> Attach Media (optional) </label>
+                            <input type = "file" id = "review-media" name="media" accept = "image/*,video/*">
+                        </div>
+
+                        <!-- Submit Button -->
+                        <div class = "form-group" id="btn_for_create">
+                            <button type="submit" class = "save-btn"> 
+                                {{#if reviewToEdit}}
+                                    Save Changes
+                                    {{else}}
+                                        Submit Review
+                                {{/if}} </button>
+                            {{#if selectedRestaurantId}}
+                                <a href="/establishments/{{selectedRestaurantId}}">
+                                    <button type="button" class="cancel-btn">Cancel</button>
+                                </a>
+                            {{else}}
+                                <a href="/">
+                                    <button type="button" class="cancel-btn">Cancel</button>
+                                </a>
+                            {{/if}}
+                            
+                        </div>
+                    </form>
+                </div>
+            </section>
+        </main>
+
+        <!-- Footer -->
+        <footer>
+            <img src="/assets/images/footer_image.jpg" class="bottom_img">
+        </footer>
+
+    </body>
+</html>

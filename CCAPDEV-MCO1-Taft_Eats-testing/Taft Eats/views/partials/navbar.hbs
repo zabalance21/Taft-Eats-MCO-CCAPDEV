@@ -1,0 +1,25 @@
+<!-- CHANGED: Added onclick handler to TAFT EATS heading so clicking it navigates to the home page. 
+     Previously the heading had no link or click handler, so users couldn't return home by clicking it. -->
+<div class="Top_navigation">
+    <h3 onclick="window.location.href='/'" style="cursor: pointer;">TAFT EATS</h3>
+    <!-- CHANGED: Wrapped search bar in a form that navigates to /establishments with the search query -->
+    <form method="get" action="/establishments" style="display:inline;">
+        <input type="text" name="search" class="search_bar" placeholder="Search establishments...">
+    </form>
+    <div class="nav_buttons" id="nav-right">
+        <button onclick="window.location.href='/'">Home</button>
+        <button onclick="window.location.href='/establishments'">View Establishments</button>
+
+        {{#if user}}
+            <div class="nav-user-menu">
+                <button id="nav-user-initial">{{userInitial}}</button>
+                <div class="user-dropdown-menu" style="display:none;">
+                    <a class="nav_link" href="/profile">View Profile</a>
+                    <a class="nav_link" href="/logout">Logout</a>
+                </div>
+            </div>
+        {{else}}
+            <button onclick="window.location.href='/login'">Sign In</button>
+        {{/if}}
+    </div>
+</div>
