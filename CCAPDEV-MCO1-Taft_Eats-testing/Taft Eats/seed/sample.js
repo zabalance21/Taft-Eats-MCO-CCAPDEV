@@ -30,7 +30,7 @@ const sampleData = async () => {
 
         for(const rev of mappedReviews){
             const createdReview = await Review.create(rev);
-            await Restaurant.findByIdAndUpdate(createdReview.restaurantId, {$inc: {reviewCount: 1}});
+            await Restaurant.findByIdAndUpdate(createdReview.restaurant, {$inc: {reviewCount: 1}});
         }
         console.log("Sample data inserted successfully!");
         mongoose.disconnect();
