@@ -267,7 +267,7 @@ app.get('/register', (req, res) => {
 });
 
 // Handle register form submission
-// fileUpload() middleware applied here only — handles avatar upload via express-fileupload
+// fileUpload() middleware applied here only — handles avatar upload via express-fileuspload
 app.post('/register',  async (req, res) => {
     
      // Run validation manually after body is parsed by fileUpload()
