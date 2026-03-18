@@ -68,7 +68,6 @@ const { registerValidation, loginValidation } = require('./validators.js');
 // =======================
 app.use(express.json()); // parses JSON request bodies
 app.use(express.urlencoded({ extended: true })); // parses form submissions (req.body)
-app.use(fileUpload());
 app.use(express.static(path.join(__dirname, 'Taft Eats'))); // serves static files (css, js, images)
 
 // Multer - handles file uploads for review media
@@ -250,7 +249,7 @@ app.post('/login', loginValidation, async (req, res) => {
 
     if (!isValidPassword) {
         req.flash('error_msg', 'Invalid username or password.');
-        return res.redirect('/login');  // <-- the missing return was here
+        return res.redirect('/login');  
     }
 
     req.session.user = {
@@ -268,7 +267,7 @@ app.get('/register', (req, res) => {
 
 // Handle register form submission
 // fileUpload() middleware applied here only — handles avatar upload via express-fileuspload
-app.post('/register',  async (req, res) => {
+app.post('/register', fileUpload(), async (req, res) => {
     
      // Run validation manually after body is parsed by fileUpload()
     await Promise.all(registerValidation.map(v => v.run(req)));
