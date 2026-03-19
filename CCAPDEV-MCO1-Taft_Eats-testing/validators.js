@@ -31,4 +31,20 @@ const loginValidation = [
         .not().isEmpty().withMessage('Password is required.')
 ];
 
-module.exports = {registerValidation, loginValidation}
+const reviewValidation = [
+    body('title')
+        .not().isEmpty().withMessage("Review title is required.")
+        .isLength({min:3}).withMessage("Title must be at least 3 characters"),
+
+    body('body')
+        .not().isEmpty().withMessage("Review body is required.")
+        .isLength({min:10}).withMessage("Review must be at least 10 characters"),
+
+    body('rating')
+        .not().isEmpty().withMessage("Please select a rating")
+        .isInt({min:1,max:5}).withMessage("Rating must be between 1 and 5")
+
+    
+];
+
+module.exports = {registerValidation, loginValidation, reviewValidation}

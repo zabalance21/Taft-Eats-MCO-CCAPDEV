@@ -60,7 +60,7 @@ hbs.registerHelper('eq', (a, b) => a === b);
 app.set('view engine', 'hbs');
 app.set('views', path.join(__dirname, 'Taft Eats', 'views'));
 hbs.registerPartials(path.join(__dirname, 'Taft Eats', 'views', 'partials')); // shared partials like footer
-const { registerValidation, loginValidation } = require('./validators.js'); 
+const { registerValidation, loginValidation, reviewValidation } = require('./validators.js'); 
 
 
 // =======================
@@ -72,11 +72,31 @@ app.use(express.static(path.join(__dirname, 'Taft Eats'))); // serves static fil
 
 // Multer - handles file uploads for review media
 // Files are saved to assets/images/uploads/ with a timestamp filename
+const allowedTypes = [
+    "image/jpeg",
+    "image/png",
+    "image/webp",
+    "image/gif",
+    "video/mp4",
+    "video/webm",
+    "video/quicktime"
+];
+
+// Multer Storage
 const storage = multer.diskStorage({
     destination: (req, file, cb) => cb(null, 'Taft Eats/assets/images/uploads/'),
     filename: (req, file, cb) => cb(null, Date.now() + path.extname(file.originalname))
 });
-const upload = multer({ storage });
+
+const fileFilter = (req, file, cb) => {
+    if(allowedTypes.includes(file.mimetype)){
+        cb(null, true);
+    }else{
+        cb(new Error("Only images and videos are allowed."), false);
+    }
+};
+
+const upload = multer({ storage, fileFilter, limits: {fileSize: 10 * 1024 * 1024} });
 // NOTE: express-fileupload() is NOT used globally — it conflicts with multer
 // It is only applied to /register and /edit-profile routes via fileUpload()
 
@@ -741,84 +761,91 @@ app.get('/review/:id', async (req, res) => {
 // Handle review form submission (create and edit)
 // upload.single('media') — multer handles the optional media file upload
 // If reviewId is present in body = editing, otherwise = creating
-app.post('/review/submit', upload.single('media'), async (req, res) => {
-    if (!req.session.user) return res.redirect('/login');
-
-    const { reviewId, restaurantId, title, body, rating } = req.body;
-
-    // reviewId is intentionally excluded — it's optional (only present when editing)
-    if (!restaurantId || !title || !body || !rating) {
-        return res.status(400).send("Please fill in all required fields");
-    }
-
-    const parsedRating = parseInt(rating);
-    if (parsedRating < 1 || parsedRating > 5) {
-        return res.status(400).send("Invalid rating");
-    }
-
-    const restaurant = await Restaurant.findOne({ id: parseInt(restaurantId) });
-    if (!restaurant) return res.status(404).send("Restaurant not found");
-
-    const mediaPath = req.file ? `assets/images/uploads/${req.file.filename}` : "";
-
-    if (reviewId) {
-        // Edit existing review — keep old media if no new file uploaded
-        const review = await Review.findById(reviewId);
-        await Review.findByIdAndUpdate(reviewId, {
-            title,
-            body,
-            rating: parsedRating,
-            media: req.file ? mediaPath : review.media,
-            edited: true,
-            date: new Date()
-        });
-
-        // CHANGED: When a review is edited, recalculate the user's like/dislike
-        // for this restaurant based on the new rating (>=3 = liked, <=2 = disliked).
-        // Pull from both first to avoid duplicates, then push into the correct one.
-        const reviewerEdit = await User.findById(req.session.user.id);
-        if (reviewerEdit) {
-            reviewerEdit.likedRestaurants.pull(restaurant.id);
-            reviewerEdit.dislikedRestaurants.pull(restaurant.id);
-            if (parsedRating >= 3) {
-                reviewerEdit.likedRestaurants.push(restaurant.id);
-            } else {
-                reviewerEdit.dislikedRestaurants.push(restaurant.id);
+app.post('/review/submit',
+    (req, res, next) => {
+        upload.single("media")(req, res, function(err) {
+            const restaurantId = req.body.restaurantId || "";
+            if(err){
+                req.flash("error_msg", err.message);
+                return res.redirect(`/review/create?restaurantId=${restaurantId}`);
             }
-            await reviewerEdit.save();
-        }
-    } else {
-        // Create new review — helpful/unhelpful/date/edited use schema defaults
-        await Review.create({
-            restaurant: restaurant._id,
-            user: req.session.user.id,
-            title,
-            body,
-            rating: parsedRating,
-            media: mediaPath
+            next();
         });
-        // CHANGED: Increment reviewCount in the restaurant document so the
-        // DB field stays in sync with the actual number of reviews.
-        await Restaurant.findByIdAndUpdate(restaurant._id, { $inc: { reviewCount: 1 } });
+    },
+    reviewValidation, 
+    async (req, res) => {
+        if (!req.session.user) return res.redirect('/login');
 
-        // CHANGED: Add restaurant to likedRestaurants (>=3 stars) or
-        // dislikedRestaurants (<=2 stars) of the reviewing user.
-        // Pull first to prevent duplicates if the user somehow reviews twice.
-        const reviewer = await User.findById(req.session.user.id);
-        if (reviewer) {
-            reviewer.likedRestaurants.pull(restaurant.id);
-            reviewer.dislikedRestaurants.pull(restaurant.id);
-            if (parsedRating >= 3) {
-                reviewer.likedRestaurants.push(restaurant.id);
-            } else {
-                reviewer.dislikedRestaurants.push(restaurant.id);
-            }
-            await reviewer.save();
+        const errors = validationResult(req);
+        const restaurantId = req.body.restaurantId || "";
+        if(!errors.isEmpty()){
+            req.flash('error_msg', errors.array()[0].msg);
+            return res.redirect(`/review/create?restaurantId=${restaurantId}`);
         }
-    }
 
-    res.redirect(`/establishments/${restaurantId}`);
-});
+        const { reviewId, title, body, rating } = req.body;
+        const parsedRating = parseInt(rating);
+
+        if(parsedRating < 1 || parsedRating > 5){
+            req.flash('error_msg', "Invalid rating");
+            return res.redirect(`/review/create?restaurantId=${restaurantId}`);
+        }
+
+        const restaurant = await Restaurant.findOne({ id: parseInt(restaurantId) });
+        if (!restaurant) return res.status(404).send("Restaurant not found");
+
+        const mediaPath = req.file ? `assets/images/uploads/${req.file.filename}` : "";
+
+        if (reviewId) {
+            const review = await Review.findById(reviewId);
+            await Review.findByIdAndUpdate(reviewId, {
+                title,
+                body,
+                rating: parsedRating,
+                media: req.file ? mediaPath : review.media,
+                edited: true,
+                date: new Date()
+            });
+
+            const reviewerEdit = await User.findById(req.session.user.id);
+            if (reviewerEdit) {
+                reviewerEdit.likedRestaurants.pull(restaurant.id);
+                reviewerEdit.dislikedRestaurants.pull(restaurant.id);
+                if (parsedRating >= 3) {
+                    reviewerEdit.likedRestaurants.push(restaurant.id);
+                } else {
+                    reviewerEdit.dislikedRestaurants.push(restaurant.id);
+                }
+                await reviewerEdit.save();
+            }
+        } else {
+            await Review.create({
+                restaurant: restaurant._id,
+                user: req.session.user.id,
+                title,
+                body,
+                rating: parsedRating,
+                media: mediaPath
+            });
+
+            await Restaurant.findByIdAndUpdate(restaurant._id, { $inc: { reviewCount: 1 } });
+
+            const reviewer = await User.findById(req.session.user.id);
+            if (reviewer) {
+                reviewer.likedRestaurants.pull(restaurant.id);
+                reviewer.dislikedRestaurants.pull(restaurant.id);
+                if (parsedRating >= 3) {
+                    reviewer.likedRestaurants.push(restaurant.id);
+                } else {
+                    reviewer.dislikedRestaurants.push(restaurant.id);
+                }
+                await reviewer.save();
+            }
+        }
+
+        res.redirect(`/establishments/${restaurantId}`);
+    }
+);
 
 // Handle review deletion
 // restaurantId passed as hidden input in the delete form for redirect after deletion
