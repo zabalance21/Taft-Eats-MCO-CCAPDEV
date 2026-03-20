@@ -100,6 +100,25 @@ const upload = multer({ storage, fileFilter, limits: {fileSize: 10 * 1024 * 1024
 // NOTE: express-fileupload() is NOT used globally — it conflicts with multer
 // It is only applied to /register and /edit-profile routes via fileUpload()
 
+// CHANGED: Centralized restaurant stats recalculation.
+// This keeps Restaurant.rating and Restaurant.reviewCount in sync with the
+// actual reviews collection after every create/edit/delete.
+async function syncRestaurantStats(restaurantObjectId) {
+    const reviewDocs = await Review.find({ restaurant: restaurantObjectId })
+        .select('rating')
+        .lean();
+
+    const reviewCount = reviewDocs.length;
+    const avgRating = reviewCount > 0
+        ? reviewDocs.reduce((sum, doc) => sum + doc.rating, 0) / reviewCount
+        : 0;
+
+    await Restaurant.findByIdAndUpdate(restaurantObjectId, {
+        reviewCount,
+        rating: parseFloat(avgRating.toFixed(1))
+    });
+}
+
 // =======================
 // MongoDB Connection
 // =======================
@@ -107,13 +126,13 @@ const upload = multer({ storage, fileFilter, limits: {fileSize: 10 * 1024 * 1024
 // restaurant after the connection is ready. This fixes the stale 0 values
 // that were left over because create/delete routes never updated the field.
 mongoose.connect('mongodb://localhost:27017/taftEats').then(async () => {
-    // Backfill reviewCount for every restaurant.
+    // CHANGED: Backfill both rating and reviewCount for every restaurant.
+    // This repairs stale values from older data before this auto-sync existed.
     const restaurants = await Restaurant.find().lean();
     for (const rest of restaurants) {
-        const count = await Review.countDocuments({ restaurant: rest._id });
-        await Restaurant.findByIdAndUpdate(rest._id, { reviewCount: count });
+        await syncRestaurantStats(rest._id);
     }
-    console.log('reviewCount synced for all restaurants');
+    console.log('rating and reviewCount synced for all restaurants');
 
     // CHANGED: Backfill likedRestaurants / dislikedRestaurants for every user
     // based on their existing reviews (>=3 stars = liked, <=2 stars = disliked).
@@ -807,6 +826,9 @@ app.post('/review/submit',
                 date: new Date()
             });
 
+            // CHANGED: Recompute restaurant stats after review edits.
+            await syncRestaurantStats(restaurant._id);
+
             const reviewerEdit = await User.findById(req.session.user.id);
             if (reviewerEdit) {
                 reviewerEdit.likedRestaurants.pull(restaurant.id);
@@ -828,7 +850,8 @@ app.post('/review/submit',
                 media: mediaPath
             });
 
-            await Restaurant.findByIdAndUpdate(restaurant._id, { $inc: { reviewCount: 1 } });
+            // CHANGED: Recompute stats after review creation so DB rating updates immediately.
+            await syncRestaurantStats(restaurant._id);
 
             const reviewer = await User.findById(req.session.user.id);
             if (reviewer) {
@@ -856,8 +879,8 @@ app.post('/review/delete/:id', async (req, res) => {
     if (!review) return res.status(404).send("Review not found");
 
     await Review.findByIdAndDelete(req.params.id);
-    // CHANGED: Decrement reviewCount so the DB field stays in sync after deletion.
-    await Restaurant.findByIdAndUpdate(review.restaurant._id, { $inc: { reviewCount: -1 } });
+    // CHANGED: Recompute stats after deletion to keep both rating and count correct.
+    await syncRestaurantStats(review.restaurant._id);
 
     // CHANGED: Remove the restaurant from the user's liked/disliked arrays
     // when their review is deleted, since their rating signal no longer exists.
