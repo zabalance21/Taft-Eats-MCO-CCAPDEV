@@ -1,6 +1,7 @@
 // =======================
 // Dependencies
 // =======================
+require('dotenv').config();
 const express = require('express');
 const hbs = require('hbs');
 const mongoose = require('mongoose');
@@ -41,10 +42,13 @@ app.use(express.static(path.join(__dirname, 'Taft Eats')));
 // =======================
 // MongoDB Connection
 // =======================
-mongoose.connect('mongodb://localhost:27017/taftEats').then(async () => {
+mongoose.connect(process.env.MONGODB_URI, {
+    family: 4,
+    serverSelectionTimeoutMS: 5000,
+}).then(async () => {
     // Backfill rating and reviewCount for every restaurant
     const restaurants = await Restaurant.find().lean();
-    for (const rest of restaurants) {
+    for (const rest of restaurants) {   
         await syncRestaurantStats(rest._id);
     }
     console.log('rating and reviewCount synced for all restaurants');
