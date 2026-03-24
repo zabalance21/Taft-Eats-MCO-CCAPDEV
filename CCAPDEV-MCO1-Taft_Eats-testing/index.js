@@ -165,6 +165,11 @@ app.use(session({
     secret: "secret-key",   // change this to an environment variable in production
     resave: false,
     saveUninitialized: false,
+     cookie: {
+        secure: false,    // set to true if using HTTPS
+        httpOnly: true,   // prevents JS access (XSS protection)
+        maxAge: 1000 * 60 * 60 * 24  // 1 day
+    }
 }));
 app.use(cookieParser());
 app.use(flash());
