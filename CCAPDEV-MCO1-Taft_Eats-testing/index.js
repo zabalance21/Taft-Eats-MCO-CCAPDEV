@@ -9,6 +9,8 @@ const session = require('express-session');
 const flash = require('connect-flash');
 const cookieParser = require('cookie-parser');
 
+require('dotenv').config();
+
 const User = require('./Taft Eats/models/User');
 const Restaurant = require('./Taft Eats/models/Restaurant');
 const Review = require('./Taft Eats/models/Review');
@@ -41,7 +43,7 @@ app.use(express.static(path.join(__dirname, 'Taft Eats')));
 // =======================
 // MongoDB Connection
 // =======================
-mongoose.connect('mongodb://localhost:27017/taftEats').then(async () => {
+mongoose.connect(process.env.MONGO_URI).then(async () => {
     // Backfill rating and reviewCount for every restaurant
     const restaurants = await Restaurant.find().lean();
     for (const rest of restaurants) {
