@@ -162,6 +162,13 @@ app.get('/', async function (req, res) {
 });
 
 // =======================
+// About Route
+// =======================
+app.get('/about', (req, res) => {
+    res.render('about');
+});
+
+// =======================
 // Mount Routes
 // =======================
 app.use('/', authRoutes);

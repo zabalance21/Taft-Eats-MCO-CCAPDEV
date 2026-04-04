@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>About Taft Eats</title>
+        <link rel="stylesheet" type="text/css" media="all" href="/css/main.css">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body>
+        <div class="wrapper">
+            {{> navbar}}
+
+            <div class="main_aboutus" style="padding: 40px 20px; max-width: 900px; margin: 0 auto;">
+                <h2>About Taft Eats</h2>
+                
+                <p>
+                    Taft Eats is a community-driven restaurant review platform designed to help food enthusiasts discover great dining experiences near Taft Avenue. Whether you're looking for recommendations or want to share your culinary adventures, Taft Eats makes it easy to connect with fellow food lovers and make informed dining decisions.
+                </p>
+
+                <h3>Project Team</h3>
+                <p>
+                    <strong>Developers:</strong> Ronin P. Zerna, Joshua Benedict B. Co, Don Oswin D. Campos, and Martin Carlos R. Delos Reyes
+                    <br><strong>Course:</strong> CCAPDEV (Applications Development) - MCO1
+                    <br><strong>Institution:</strong> Ateneo de Manila University
+                </p>
+
+                <h3>Features</h3>
+                <ul>
+                    <li>✨ User Authentication - Secure registration and login with password hashing</li>
+                    <li>🍽️ Restaurant Discovery - Browse and search establishments with advanced filtering</li>
+                    <li>⭐ Review System - Submit detailed reviews with ratings and media attachments</li>
+                    <li>👤 User Profiles - Track reviews, liked/disliked restaurants, and profile statistics</li>
+                    <li>🔍 Search & Navigation - Find restaurants and reviews with global search functionality</li>
+                    <li>🏪 Owner Dashboard - Restaurant owners can manage their establishment reviews and respond to customers</li>
+                </ul>
+
+                <h3>Technologies & Dependencies</h3>
+                <p><strong>Backend Framework & Libraries:</strong></p>
+                <ul>
+                    <li><strong>Express.js (v5.2.1)</strong> - Web application framework for Node.js. MIT License.</li>
+                    <li><strong>Mongoose (v9.2.3)</strong> - MongoDB object modeling for Node.js. MIT License.</li>
+                    <li><strong>bcrypt (v6.0.0)</strong> - Password hashing library for secure authentication. MIT License.</li>
+                    <li><strong>Express Handlebars (v8.0.6)</strong> - Handlebars templating engine for Express. MIT License.</li>
+                    <li><strong>Handlebars (v4.7.8) - Built-in with Express Handlebars</strong> - Template engine for dynamic views. MIT License.</li>
+                    <li><strong>Express Session (v1.19.0)</strong> - Session management middleware for Express. MIT License.</li>
+                    <li><strong>Connect Flash (v0.1.1)</strong> - Flash messaging middleware for Express sessions. MIT License.</li>
+                    <li><strong>Cookie Parser (v1.4.7)</strong> - Middleware to parse HTTP request cookies. MIT License.</li>
+                    <li><strong>Express FileUpload (v1.5.2)</strong> - Middleware for file upload handling. MIT License.</li>
+                    <li><strong>Multer (v2.1.1)</strong> - Middleware for multipart form data (file uploads). MIT License.</li>
+                    <li><strong>Express Validator</strong> - Middleware for input validation and sanitization. MIT License.</li>
+                </ul>
+
+                <p><strong>Frontend Libraries:</strong></p>
+                <ul>
+                    <li><strong>jQuery (v4.0.0)</strong> - JavaScript library for DOM manipulation and AJAX. MIT License.</li>
+                </ul>
+
+                <p><strong>Database:</strong></p>
+                <ul>
+                    <li><strong>MongoDB</strong> - NoSQL database for storing application data. SSPL License.</li>
+                </ul>
+
+                <p><strong>Development:</strong></p>
+                <ul>
+                    <li><strong>Node.js</strong> - JavaScript runtime environment. MIT License.</li>
+                    <li><strong>npm</strong> - Package manager for JavaScript. MIT License.</li>
+                </ul>
+
+                <h3>Architecture</h3>
+                <p>
+                    Taft Eats follows the <strong>Model-View-Controller (MVC)</strong> architectural pattern:
+                    <br><strong>Models:</strong> MongoDB schemas for User, Restaurant, and Review
+                    <br><strong>Views:</strong> Handlebars templates (.hbs files) for rendering dynamic HTML
+                    <br><strong>Controllers:</strong> Express routes handling business logic and request processing
+                </p>
+
+                <h3>Database Structure</h3>
+                <ul>
+                    <li><strong>Users Collection:</strong> Stores user profiles, authentication data, and preferences</li>
+                    <li><strong>Restaurants Collection:</strong> Contains restaurant information, ratings, and review counts</li>
+                    <li><strong>Reviews Collection:</strong> Stores all user reviews, ratings, and helpful vote counts</li>
+                </ul>
+
+                <h3>Security Features</h3>
+                <ul>
+                    <li>✔️ Password Hashing - All passwords are hashed using bcrypt before storage</li>
+                    <li>✔️ Session Management - Secure user sessions with HTTP-only cookies</li>
+                    <li>✔️ Form Validation - Both client-side and server-side validation for all inputs</li>
+                    <li>✔️ SQL Injection Prevention - Using Mongoose parameterized queries</li>
+                </ul>
+
+                <h3>Sample Data</h3>
+                <p>
+                    The application comes preloaded with 6+ sample restaurants, 12+ sample users (including restaurant owners), and 30+ sample reviews to demonstrate the platform's functionality. All sample passwords are securely hashed.
+                </p>
+
+                <h3>How to Use Sample Accounts</h3>
+                <p><strong>Regular Users:</strong></p>
+                <ul>
+                    <li>Username: ronin_z | Password: ronin123</li>
+                    <li>Username: joshua_c | Password: joshua123</li>
+                    <li>Username: don_c | Password: don123</li>
+                    <li>Username: martin_r | Password: martin123</li>
+                    <li>Username: ryan_v | Password: ryan123</li>
+                    <li>Username: emily_s | Password: emily123</li>
+                </ul>
+
+                <p><strong>Restaurant Owner Accounts:</strong></p>
+                <ul>
+                    <li>Username: owner_latoca | Password: latoca123 (La Toca)</li>
+                    <li>Username: owner_barn | Password: barn123 (Barn)</li>
+                    <li>Username: owner_tinuhog | Password: tinuhog123 (Tinuhog ni Benny's)</li>
+                    <li>Username: owner_century | Password: century123 (Century Seafood)</li>
+                    <li>Username: owner_24chicken | Password: 24chicken123 (24 Chicken)</li>
+                    <li>Username: owner_agno | Password: agno123 (Agno Food Court)</li>
+                </ul>
+
+                <h3>Version Information</h3>
+                <p>
+                    <strong>Current Version:</strong> 1.0.0 (Phase 3 - Deployment)
+                    <br><strong>Last Updated:</strong> 2026
+                    <br><strong>Node.js Version Required:</strong> 14.0.0 or higher
+                    <br><strong>Database:</strong> MongoDB (Local or Atlas)
+                </p>
+
+                <h3>License & Credits</h3>
+                <p>
+                    This project utilizes open-source libraries and frameworks, each maintaining their respective licenses as mentioned above. The application was developed as part of the CCAPDEV course at Ateneo de Manila University with assistance from AI tools.
+                </p>
+
+                <img src="/assets/images/footer_image.jpg" class="bottom_img" alt="Footer">
+            </div>
+        </div>
+    </body>
+</html>
