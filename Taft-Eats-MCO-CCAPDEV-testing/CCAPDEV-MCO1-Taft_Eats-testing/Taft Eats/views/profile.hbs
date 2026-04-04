@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+
+<html>
+
+    <head>
+        <title> Taft Eats | User Profile </title>
+
+        <link rel = "stylesheet" type="text/css" media="all" href="../css/main.css">
+
+        <script src="../js/jquery-4.0.0.min.js"></script>
+        <script src="../js/data.js"></script>
+        <script src="../js/main.js"></script>
+    </head>
+
+    <body>
+        <!-- Dynamic Navigation Bar - Will be populated by JavaScript -->
+        {{> navbar}}
+
+         <!-- User Profile Section -->
+        <main class="profile">
+            <section class = "profile-section">
+
+                <!-- Left: Profile Card -->
+                <div class = "profile-card">
+
+                    <div class = "profile-image">
+                        <img id = "profile-avatar" src = "{{user.avatar}}" alt = "User Profile Picture">
+                    </div>
+
+                    <div class = "profile-info">
+                        <!-- JS will populate these fields from data.js -->
+                        <h3 id = "profile-username">{{user.fullName}}</h3>
+                        <p class = "joined-date" id = "profile-joined">Joined {{joinedDate}} days ago</p>
+
+                        <p class = "profile-description" id = "profile-desc">{{user.description}}</p>
+
+                        <button onclick="window.location.href='/edit-profile'" class = "edit-profile-btn"> Edit Profile </button>
+                    </div>
+
+                </div>
+
+                <!-- Right: Profile Statistics -->
+                <!-- CHANGED: For owners, show Total Reviews and Star Rating for their restaurant.
+                     For regular users, show Total Reviews, Liked, and Disliked counts. -->
+                <aside class = "profile-stats">
+
+                    <div class = "stat-card">
+                        <p class="smaller"> Total Reviews </p>
+                        <h3 id = "total-reviews-count">{{totalReviews}}</h3>
+                    </div>
+
+                    {{#if isOwner}}
+                        <div class = "stat-card">
+                            <p class="smaller"> Restaurant Rating </p>
+                            <h3>{{avgRating}}</h3>
+                            <p class="stars">{{avgRatingStars}}</p>
+                        </div>
+                    {{else}}
+                        <!-- CHANGED: Uses likedCount/dislikedCount passed from the route.
+                             Falls back to review-rating-based derivation if no explicit
+                             like/dislike buttons have been clicked yet. -->
+                        <div class = "stat-card">
+                            <p class="smaller"> Liked Restaurants </p>
+                            <h3 id = "liked-restaurants-count">{{likedCount}}</h3>
+                        </div>
+
+                        <div class = "stat-card">
+                            <p class="smaller"> Disliked Restaurants</p>
+                            <h3 id = "disliked-restaurants-count">{{dislikedCount}}</h3>
+                        </div>
+                    {{/if}}
+
+                </aside>
+
+            </section>
+
+            <section class = "latest-reviews">
+
+                <h3> Latest Reviews </h3>
+
+                <!-- CHANGED: Added scrollable container and conditional columns for owners vs regular users.
+                     Owners see customer reviews for their restaurant with reviewer name.
+                     Regular users see their own reviews with restaurant name. -->
+                <div class = "review-card2" style="max-height: 400px; overflow-y: auto;">
+
+                    <div class = "reviews-header2">
+                        <span> Date </span>
+                        {{#if isOwner}}
+                            <span> Reviewer </span>
+                        {{else}}
+                            <span> Restaurant Name </span>
+                        {{/if}}
+                        <span> Rating </span>
+                        <span></span>
+                    </div>
+
+                    {{#each latestReviews}}
+                    <div class="review-row">
+                        <span class="review-date">{{date}} {{#if edited}} (Edited) {{/if}}</span>
+                        {{#if ../isOwner}}
+                            <span class="review-restaurant">{{reviewerName}}</span>
+                        {{else}}
+                            <span class="review-restaurant">{{restaurantName}}</span>
+                        {{/if}}
+                        <span class="review-rating">{{ratingStars}}</span>
+                        <a href="/review/{{id}}">View</a>
+                    </div>
+                    {{/each}}
+                </div>
+
+            </section>
+        </main>
+
+        <!-- Footer -->
+         {{> footer}}
+                
+    </body>
+</html>

@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+
+<html>
+
+    <head>
+        <title> Taft Eats | View Establishments </title>
+
+        <link rel = "stylesheet" type = "text/css" href = "../css/main.css">
+
+        <script src="../js/jquery-4.0.0.min.js"></script>
+        <script src="../js/data.js"></script>
+        <script src="../js/main.js"></script>
+        
+    </head>
+
+    <body>
+        <!-- Navigation Bar -->
+        <header>
+            <nav>
+                <div class = "nav-left">
+                    <a href="/"><h3>TAFT EATS</h3></a>
+                </div>
+
+                <form method="get" action="/establishments" class="nav-center">
+                    <!-- CHANGED: Added value to preserve search term in the input after submission -->
+                    <input 
+                        type="text" 
+                        name="search"
+                        id="search-establishment"
+                        placeholder="Search establishments..." 
+                        value="{{searchKeyword}}"
+                    >
+
+                    <select name="rating" id="filter-rating" onchange="this.form.submit()">
+                        <option value="0">All Ratings</option>
+                        <option value="1">1★+</option>
+                        <option value="2">2★+</option>
+                        <option value="3">3★+</option>
+                        <option value="4">4★+</option>
+                    </select>
+                </form>
+
+                <div class="nav-right" id="nav-right">
+                    <button type="button" onclick="window.location.href='/'">Home</button>
+                    <button type="button" onclick="window.location.href='/establishments'">View Establishments</button>
+
+                    {{#if user}}
+                        <div class="nav-user-menu">
+                            <button type="button" id="nav-user-initial">{{userInitial}}</button>
+                            <div class="user-dropdown-menu" style="display:none;">
+                                <a class="nav_link" href="/profile">View Profile</a>
+                                <a class="nav_link" href="/logout">Logout</a>
+                            </div>
+                        </div>
+                    {{else}}
+                        <button type="button" onclick="window.location.href='/login'">Sign In</button>
+                    {{/if}}
+                </div>
+            </nav>
+        </header>
+
+        <!-- Establishments Section -->
+        <main>
+            <h2>Establishments</h2>
+            <section class = "establishments-section">
+                {{#if establishments.length}}
+                    {{#each establishments}}
+                        <a href="/establishments/{{id}}">    
+                            <div class="establishment-card">
+                                <img class="rest_img est-img" src="{{image}}" alt="{{name}}">
+                                <h3 class="est-name">{{name}}</h3>
+                                <p class="est-rating">Overall Rating: {{rating}}</p>
+                                <div class="est-stars" data-rating="{{rating}}">
+                                    <span>★</span>
+                                    <span>★</span>
+                                    <span>★</span>
+                                    <span>★</span>
+                                    <span>★</span>
+                                </div>
+                                <p class="est-desc">{{description}}</p>
+                            </div>
+                        </a>
+                    {{/each}}
+                {{else}}
+                    <p>No establishments found.</p>
+                {{/if}}
+            </section>
+        </main>
+
+        <!-- Footer -->
+        {{> footer}}
+    </body>
+
+</html>
