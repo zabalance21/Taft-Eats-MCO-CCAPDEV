@@ -1117,8 +1117,9 @@ a.nav_link:hover {
 .restaurant-vote {
     display: flex;
     gap: var(--space-md);
-    margin: var(--space-md) 0;
+    margin-top: var(--space-lg);
     flex-wrap: wrap;
+    justify-content: center;
 }
 
 .rest-like-btn,
