@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Taft Eats</title>
+        <link rel="stylesheet" type="text/css" media="all" href="css/main.css">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script src="js/jquery-4.0.0.min.js"></script>
+        <script type="module" src="js/data.js"></script>
+    </head>
+
+    <body>
+        <div class="wrapper">
+            <!-- Dynamic Navigation Bar - Will be populated by JavaScript -->
+            {{> navbar}}
+            <script src="js/main.js"></script>
+
+            <!-- Hero Section -->
+            <div class="Main">
+                <div class="left_part">
+                    <div class="center">
+                        <h1>Discover.</h1>
+                        <h1>Decide.</h1>
+                        <h1>Dine.</h1>
+                    </div>
+
+                    <h4>YOUR TRUSTED DESTINATION FOR <br>FOOD REVIEWS</h4>
+                    <button type="button" onclick="window.location.href='/establishments'">Explore</button>
+                </div>
+                
+                <img src="assets/images/food.jpg" alt="Delicious food">
+            </div>
+
+            <!-- Top-Reviewed Restaurants Section -->
+            <div class="rest_rev">
+                <div class="header">
+                    <h5>TOP-REVIEWED RESTAURANTS</h5>
+                    <button type="button" onclick="window.location.href='/establishments'">View More</button>
+                </div>
+
+                <!-- CHANGED: Previously had 5 hardcoded restaurant cards with static ratings
+                     and fake review counts (e.g. "50 reviews", "100 reviews").
+                     Now dynamically rendered from topRestaurants fetched from the database
+                     in the '/' route, so ratings and review counts reflect actual data. -->
+                <div class="revs">
+                    {{#each topRestaurants}}
+                    <div class="review" data-rating="{{this.ratingWhole}}" data-revs="{{this.reviewCount}}" data-id="{{this.id}}">
+                        <img src="{{this.image}}" class="rev_pic" alt="{{this.name}}">
+                        <p class="rest_nam">{{this.name}}</p>
+                        <p class="rest_desc">{{this.description}}</p>
+                        <div class="stars">
+                            <span>★</span>
+                            <span>★</span>
+                            <span>★</span>
+                            <span>★</span>
+                            <span>★</span> 
+                        </div>
+                        <p class="rev_count">{{this.reviewCount}} reviews</p>
+                    </div>
+                    {{/each}}
+                </div>
+            </div>
+
+            <!-- What People Are Saying Section 
+                 CHANGED: Previously had 5 hardcoded review cards with static numeric IDs
+                 (data-review-id="0", "5", "10", etc.). Clicking them caused a CastError
+                 because those are not valid MongoDB ObjectIds.
+                 Now dynamically rendered using Handlebars each loop with real review data
+                 fetched from the database in the '/' route, so each card has a valid _id. -->
+            <div class="people_rev">
+                <div class="header">
+                    <h5>WHAT PEOPLE ARE SAYING</h5>
+                </div>
+
+                <div class="user_revs">
+                    {{#each reviews}}
+                    <div class="peep_review" data-review-id="{{this._id}}" data-rating="{{this.rating}}">
+                        <div class="user_header">
+                            <img src="{{this.avatar}}" class="user_pic" alt="User avatar">
+                            <div class="info">
+                                <p class="name">{{this.username}}</p>
+                                <div class="peep_stars">
+                                    <span>★</span>
+                                    <span>★</span>
+                                    <span>★</span>
+                                    <span>★</span>
+                                    <span>★</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <p class="peep_body">{{this.body}}</p>
+
+                        <!-- CHANGED: Added media display so uploaded images show on homepage review cards -->
+                        {{#if this.media}}
+                            <div class="review-media">
+                                <img src="/{{this.media}}" alt="Review Media">
+                            </div>
+                        {{else}}
+                            <div class="review-media-placeholder" aria-hidden="true"></div>
+                        {{/if}}
+
+                        <div class="peep_footer">
+                            <p>{{this.restaurantName}} <span>{{this.rating}}</span></p>
+                        </div>
+                    </div>
+                    {{/each}}
+                </div>
+            </div>
+
+            <!-- Footer Image -->
+            <img src="assets/images/footer_image.jpg" class="bottom_img" alt="Footer decoration">
+        </div>
+
+        <!-- JavaScript for Home Page Interactivity -->
+        <script>
+            // Function to handle restaurant card clicks
+            function handleRestaurantClick(restaurantId) {
+                window.location.href = `/establishments/${restaurantId}`;
+            }
+
+            // Function to handle review card clicks
+            // CHANGED: Previously navigated to pages/review.html?reviewId=... (static HTML path
+            // that doesn't exist). Now uses /review/${reviewId} to match the Express route
+            // app.get('/review/:id') in index.js.
+            function handleReviewClick(reviewId) {
+                if (reviewId) {
+                    window.location.href = `/review/${reviewId}`;
+                }
+            }
+
+            // Wait for DOM to be fully loaded
+            $(document).ready(function() {
+                // Initialize navigation bar
+                if (typeof updateNavbar === 'function') {
+                    updateNavbar();
+                }
+
+                // ===== TOP-REVIEWED RESTAURANTS =====
+                // Add click handlers and star ratings to restaurant cards
+                document.querySelectorAll('.review').forEach(card => {
+                    const rating = Number(card.dataset.rating);
+                    const stars = card.querySelectorAll('.stars span');
+                    
+                    // Activate stars based on rating
+                    stars.forEach((star, index) => {
+                        if(index < rating) {
+                            star.classList.add('active');
+                        }
+                    });
+                    
+                    // Update review count text
+                    const revCount = card.dataset.revs;
+                    card.querySelector('.rev_count').textContent = `${revCount} reviews`;
+                    
+                    // Add restaurant name if not set
+                    const restNameElement = card.querySelector('.rest_nam');
+                    const restId = card.dataset.id;
+                    
+                    // Set restaurant name based on ID if not already set
+                    if (restNameElement.textContent === 'RESTURANT NAME' || restNameElement.textContent === 'RESTAURANT NAME') {
+                        const establishments = [
+                            { id: 1, name: 'La Toca' },
+                            { id: 2, name: 'Barn' },
+                            { id: 3, name: 'Tinuhog ni Benny\'s' },
+                            { id: 4, name: 'Century Seafood' },
+                            { id: 5, name: '24 Chicken' },
+                            { id: 6, name: 'Agno Food Court' }
+                        ];
+                        const restaurant = establishments.find(e => e.id == restId);
+                        if (restaurant) {
+                            restNameElement.textContent = restaurant.name;
+                        }
+                    }
+                    
+                    // Add click handler for restaurant cards
+                    card.onclick = () => {
+                        handleRestaurantClick(restId);
+                    };
+                    
+                    // Add cursor pointer style
+                    card.style.cursor = 'pointer';
+                });
+
+                // ===== WHAT PEOPLE ARE SAYING =====
+                // Add click handlers and star ratings to review cards
+                document.querySelectorAll('.peep_review').forEach(review => {
+                    const rating = Number(review.dataset.rating);
+                    const stars = review.querySelectorAll('.peep_stars span');
+                    
+                    // Activate stars based on rating
+                    stars.forEach((star, index) => {
+                        if(index < rating) {
+                            star.classList.add('active');
+                        }
+                    });
+                    
+                    // Add click handler for review cards
+                    review.onclick = function(e) {
+                        // Prevent triggering when clicking on links/buttons inside
+                        if (e.target.tagName === 'A' || e.target.tagName === 'BUTTON') {
+                            return;
+                        }
+                        const reviewId = this.dataset.reviewId;
+                        handleReviewClick(reviewId);
+                    };
+                    
+                    // Add cursor pointer style
+                    review.style.cursor = 'pointer';
+                });
+
+                // CHANGED: Removed old client-side search filtering. The search bar is now
+                // wrapped in a form (in navbar partial) that navigates to /establishments?search=...
+            });
+        </script>
+    </body>
+</html>
