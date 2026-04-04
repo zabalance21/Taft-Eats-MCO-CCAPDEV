@@ -37,10 +37,6 @@
                     <button type="button" onclick="window.location.href='/establishments'">View More</button>
                 </div>
 
-                <!-- CHANGED: Previously had 5 hardcoded restaurant cards with static ratings
-                     and fake review counts (e.g. "50 reviews", "100 reviews").
-                     Now dynamically rendered from topRestaurants fetched from the database
-                     in the '/' route, so ratings and review counts reflect actual data. -->
                 <div class="revs">
                     {{#each topRestaurants}}
                     <div class="review" data-rating="{{this.ratingWhole}}" data-revs="{{this.reviewCount}}" data-id="{{this.id}}">
@@ -60,12 +56,6 @@
                 </div>
             </div>
 
-            <!-- What People Are Saying Section 
-                 CHANGED: Previously had 5 hardcoded review cards with static numeric IDs
-                 (data-review-id="0", "5", "10", etc.). Clicking them caused a CastError
-                 because those are not valid MongoDB ObjectIds.
-                 Now dynamically rendered using Handlebars each loop with real review data
-                 fetched from the database in the '/' route, so each card has a valid _id. -->
             <div class="people_rev">
                 <div class="header">
                     <h5>WHAT PEOPLE ARE SAYING</h5>
@@ -90,7 +80,6 @@
 
                         <p class="peep_body">{{this.body}}</p>
 
-                        <!-- CHANGED: Added media display so uploaded images show on homepage review cards -->
                         {{#if this.media}}
                             <div class="review-media">
                                 <img src="/{{this.media}}" alt="Review Media">
@@ -119,9 +108,6 @@
             }
 
             // Function to handle review card clicks
-            // CHANGED: Previously navigated to pages/review.html?reviewId=... (static HTML path
-            // that doesn't exist). Now uses /review/${reviewId} to match the Express route
-            // app.get('/review/:id') in index.js.
             function handleReviewClick(reviewId) {
                 if (reviewId) {
                     window.location.href = `/review/${reviewId}`;
@@ -208,8 +194,6 @@
                     review.style.cursor = 'pointer';
                 });
 
-                // CHANGED: Removed old client-side search filtering. The search bar is now
-                // wrapped in a form (in navbar partial) that navigates to /establishments?search=...
             });
         </script>
     </body>

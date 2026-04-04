@@ -46,7 +46,6 @@
                 </div>
 
                 <div class = "review-footer">
-                    <!-- CHANGED: Logged-in users can vote; guests see unclickable display-only buttons. -->
                     {{#if user}}
                         <button type="button" class="vote-btn helpful-btn" data-review-id="{{review._id}}" data-type="helpful">
                             👍 Helpful (<span class="helpful-count">{{review.helpful}}</span>)

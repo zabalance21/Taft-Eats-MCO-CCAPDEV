@@ -4,10 +4,6 @@
     <head>
         <title>Taft Eats | {{#if reviewToEdit}}Edit Review {{else}} Create a review {{/if}}</title>
 
-        <!-- CHANGED: Switched from relative paths (../css, ../js) to absolute paths (/css, /js).
-             When the URL is /review/edit/:id, the browser resolved ../css/main.css to
-             /review/css/main.css which doesn't exist, causing the page to render unstyled. 
-             Absolute paths always resolve from the root regardless of the URL depth. -->
         <link rel = "stylesheet" type = "text/css" href = "/css/main.css">
 
         <script src = "/js/jquery-4.0.0.min.js"></script>
@@ -19,7 +15,7 @@
         <!-- Dynamic Navigation Bar - Will be populated by JavaScript -->
         <div class="Top_navigation">
             <a href="/"><h3>TAFT EATS</h3></a>  
-            <!-- CHANGED: Wrapped search bar in a form that navigates to /establishments with search query -->
+
             <form method="get" action="/establishments" style="display:inline;">
                 <input type="text" name="search" class="search_bar" placeholder="Search establishments...">
             </form>
