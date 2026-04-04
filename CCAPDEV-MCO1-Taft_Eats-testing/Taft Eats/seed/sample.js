@@ -1,10 +1,13 @@
+require('dotenv').config();
+
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 const {users, establishments, reviews} = require('../js/data'); // Sample data for the database
 const User = require('../models/User');
 const Restaurant = require('../models/Restaurant');
 const Review = require('../models/Review');
-mongoose.connect('mongodb://localhost:27017/taftEats');
+
+mongoose.connect(process.env.MONGODB_URI);
 
 const sampleData = async () => {
     try{
