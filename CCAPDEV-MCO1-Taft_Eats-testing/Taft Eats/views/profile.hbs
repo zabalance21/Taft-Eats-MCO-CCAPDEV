@@ -40,8 +40,6 @@
                 </div>
 
                 <!-- Right: Profile Statistics -->
-                <!-- CHANGED: For owners, show Total Reviews and Star Rating for their restaurant.
-                     For regular users, show Total Reviews, Liked, and Disliked counts. -->
                 <aside class = "profile-stats">
 
                     <div class = "stat-card">
@@ -56,9 +54,7 @@
                             <p class="stars">{{avgRatingStars}}</p>
                         </div>
                     {{else}}
-                        <!-- CHANGED: Uses likedCount/dislikedCount passed from the route.
-                             Falls back to review-rating-based derivation if no explicit
-                             like/dislike buttons have been clicked yet. -->
+
                         <div class = "stat-card">
                             <p class="smaller"> Liked Restaurants </p>
                             <h3 id = "liked-restaurants-count">{{likedCount}}</h3>
@@ -78,9 +74,6 @@
 
                 <h3> Latest Reviews </h3>
 
-                <!-- CHANGED: Added scrollable container and conditional columns for owners vs regular users.
-                     Owners see customer reviews for their restaurant with reviewer name.
-                     Regular users see their own reviews with restaurant name. -->
                 <div class = "review-card2" style="max-height: 400px; overflow-y: auto;">
 
                     <div class = "reviews-header2">

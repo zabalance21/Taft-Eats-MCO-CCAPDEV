@@ -57,22 +57,18 @@
                     </div>
                 </div>
 
-            </section>
+                {{#if user}}
+                <div class="restaurant-vote">
+                    <button type="button" class="rest-like-btn{{#if userLiked}} active{{/if}}" data-restaurant-id="{{restaurant.id}}" data-type="like">
+                        👍 Like
+                    </button>
+                    <button type="button" class="rest-dislike-btn{{#if userDisliked}} active{{/if}}" data-restaurant-id="{{restaurant.id}}" data-type="dislike">
+                        👎 Dislike
+                    </button>
+                </div>
+                {{/if}}
 
-            <!-- CHANGED: Added like/dislike buttons for the restaurant itself.
-                 Only shown when logged in. Buttons reflect the user's current vote
-                 (active class applied server-side via userLiked/userDisliked flags).
-                 AJAX updates the state without a page reload. -->
-            {{#if user}}
-            <div class="restaurant-vote">
-                <button type="button" class="rest-like-btn{{#if userLiked}} active{{/if}}" data-restaurant-id="{{restaurant.id}}" data-type="like">
-                    👍 Like
-                </button>
-                <button type="button" class="rest-dislike-btn{{#if userDisliked}} active{{/if}}" data-restaurant-id="{{restaurant.id}}" data-type="dislike">
-                    👎 Dislike
-                </button>
-            </div>
-            {{/if}}
+            </section>
 
             <!-- Reviews Section -->
             <section class = "reviews-section">
@@ -82,9 +78,6 @@
 
                     <input type = "text" id = "search-reviews" placeholder = "Search reviews...">
 
-                    <!-- CHANGED: Removed the if-currentUser condition so the button is always visible.
-                         Previously the button only appeared when logged in.
-                         The /review/create route already redirects to /login if not authenticated. -->
                     <a id = "create-review-btn" href="/review/create?restaurantId={{restaurant.id}}"> Write a Review </a>
                 </div>
                 
@@ -106,12 +99,9 @@
                         </div>
                         
                         <h4 class="main_review_h">{{this.title}}</h4>
-                        <!-- CHANGED: Added data-full-body attribute to store the complete review text.
-                             The visible text is truncated to 100 characters with "..." via JS on page load.
-                             The "Read Full Review" button toggles between truncated and full text. -->
+
                         <p class="main_review_p truncated" data-full-body="{{this.body}}">{{this.body}}</p>
 
-                        <!-- CHANGED: Added media display so uploaded images show on the review card -->
                         {{#if this.media}}
                             <div class="review-media">
                                 <img src="/{{this.media}}" alt="Review Media" style="max-width:400px;">
@@ -126,7 +116,7 @@
                         {{/if}}
 
                         <div class="review-footer">
-                            <!-- CHANGED: Logged-in users can vote; guests see unclickable display-only buttons. -->
+
                             {{#if ../currentUser}}
                                 <button type="button" class="vote-btn helpful-btn" data-review-id="{{this._id}}" data-type="helpful">
                                     👍 Helpful (<span class="helpful-count">{{this.helpful}}</span>)
