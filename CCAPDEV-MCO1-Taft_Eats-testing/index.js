@@ -10,6 +10,8 @@ const session = require('express-session');
 const flash = require('connect-flash');
 const cookieParser = require('cookie-parser');
 
+require('dotenv').config();
+
 const User = require('./Taft Eats/models/User');
 const Restaurant = require('./Taft Eats/models/Restaurant');
 const Review = require('./Taft Eats/models/Review');
